@@ -49,8 +49,6 @@ router.post("/request", async (req, res) => {
 
     if (!user) return res.status(404).json({ error: "User not found" });
 
-
-
     if (mode === "email") {
       const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -65,12 +63,17 @@ router.post("/request", async (req, res) => {
 
       console.log("EMAIL OTP:", otp);
 
-      await transporter.sendMail({
-        from: process.env.EMAIL_USER,
-        to: user.email,
-        subject: "Password Reset OTP",
-        text: `Your OTP is ${otp}. Valid for 10 minutes.`,
-      });
+      try {
+        await transporter.sendMail({
+          from: process.env.EMAIL_USER,
+          to: user.email,
+          subject: "Password Reset OTP",
+          text: `Your OTP is ${otp}. Valid for 10 minutes.`,
+        });
+      } catch (mailErr) {
+        console.error("EMAIL SEND ERROR:", mailErr);
+        return res.status(500).json({ error: "Email sending failed" });
+      }
     }
 
     if (mode === "phone") {
