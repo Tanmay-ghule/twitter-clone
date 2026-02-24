@@ -15,8 +15,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "      "https://twitter-clone-swart-delta.vercel.app",
-",
+      "https://twitter-clone-swart-delta.vercel.app",
     ],
     credentials: true,
   })
