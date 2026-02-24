@@ -2,6 +2,13 @@ import express from "express";
 import multer from "multer";
 import Tweet from "../modals/tweet.js";
 import User from "../modals/user.js";
+import fs from "fs";
+import path from "path";
+
+const uploadDir = "uploads/audio";
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 const router = express.Router();
 
