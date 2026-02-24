@@ -3,13 +3,14 @@ dotenv.config();
 
 import express from "express";
 import User from "../modals/user.js";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 import bcrypt from "bcrypt";
 import { generatePassword } from "../utils/passwordGenerator.js";
 import admin from "../firebaseAdmin.js";
 import twilio from "twilio";
 
 const router = express.Router();
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const twilioClient = twilio(
   process.env.TWILIO_SID,
@@ -64,8 +65,8 @@ router.post("/request", async (req, res) => {
       console.log("EMAIL OTP:", otp);
 
       try {
-        await transporter.sendMail({
-          from: process.env.EMAIL_USER,
+        await resend.emails.send({
+          from: "onboarding@resend.dev",
           to: user.email,
           subject: "Password Reset OTP",
           text: `Your OTP is ${otp}. Valid for 10 minutes.`,
