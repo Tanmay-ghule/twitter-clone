@@ -16,6 +16,7 @@ app.use(
     origin: [
       "http://localhost:3000",
       "https://twitter-clone-swart-delta.vercel.app",
+      "https://twitter-clone-s0gjf53d6-tanmay-ghules-projects.vercel.app",
     ],
     credentials: true,
   })
