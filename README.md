@@ -1,27 +1,39 @@
 # Twitter 2.0 Clone 🚀
 
-A full-stack Twitter (X) style social media application where users can post tweets, like, retweet, upload media, and manage their profile.
+A full-stack Twitter (X) style social media application where users can create tweets, upload media, interact with posts, and manage their profiles.
 
 ---
 
 ## ✨ Features
 
-* 🔐 Firebase authentication
-* 🐦 Create and view tweets
-* ❤️ Like and unlike tweets
-* 🔁 Retweet functionality
-* 🖼️ Image upload support
-* 🎧 Audio tweet upload
-* 📱 Responsive layout
-* 🔑 OTP verification (Twilio)
-* 👤 User profile update
+### Authentication
+
+* Firebase Google login
+* OTP verification using Twilio
+
+### Core Functionality
+
+* Create tweets
+* Like / Unlike tweets
+* Retweet tweets
+* Home feed timeline
+* User profile update
+
+### Media Support
+
+* Image upload (ImgBB)
+* Audio tweet upload
+
+### UI
+
+* Responsive design for different screen sizes
 
 ---
 
-## 🚀 Live Demo
+## 🚀 Deployment Targets
 
-Frontend: *To be deployed on Vercel*
-Backend: *To be deployed on Render*
+* **Frontend:** Vercel
+* **Backend:** Render
 
 ---
 
@@ -29,15 +41,16 @@ Backend: *To be deployed on Render*
 
 ```
 root
-├── app/
-├── components/
-├── context/
-├── lib/
+├── app/                 # Next.js app router
+├── components/          # UI components
+├── context/             # Auth & global state
+├── lib/                 # Axios & utilities
 ├── public/
 ├── backend/
 │   ├── modals/
 │   ├── routes/
 │   ├── utils/
+│   ├── firebaseAdmin.js
 │   └── index.js
 ```
 
@@ -74,18 +87,18 @@ FIREBASE_PRIVATE_KEY=
 
 ---
 
-## 🧑‍💻 Local Setup
+## 🧑‍💻 Local Development Setup
 
-### 1. Clone the repository
+### 1️⃣ Clone repository
 
 ```bash
-git clone https://github.com/tanmay-ghule/twitter-2.0.git
+git clone https://github.com/Tanmay-ghule/twitter-2.0.git
 cd twitter-2.0
 ```
 
 ---
 
-### 2. Install dependencies
+### 2️⃣ Install dependencies
 
 #### Frontend
 
@@ -102,20 +115,20 @@ npm install
 
 ---
 
-### 3. Configure environment variables
+### 3️⃣ Configure environment variables
 
-Create the required env files and add your credentials:
+Create and fill:
 
 * `.env.local`
 * `backend/.env`
 
 ---
 
-### 4. Run backend server
+### 4️⃣ Run backend
 
 ```bash
 cd backend
-npm run dev
+npm start
 ```
 
 Backend runs on:
@@ -126,7 +139,7 @@ http://localhost:5000
 
 ---
 
-### 5. Run frontend
+### 5️⃣ Run frontend
 
 ```bash
 npm run dev
@@ -140,25 +153,16 @@ http://localhost:3000
 
 ---
 
-## 🔐 Security
+## 🔐 Security Notes
 
-Sensitive files are excluded using `.gitignore`, including:
+The following are ignored via `.gitignore`:
 
 * `.env` files
-* Firebase service keys
+* Firebase service account keys
 * `node_modules`
 * upload folders
 
-Never commit secrets to the repository.
-
----
-
-## 🚀 Deployment Plan
-
-* **Frontend:** Vercel
-* **Backend:** Render
-
-Update environment variables on the hosting platforms before deploying.
+**Never commit secrets to GitHub.**
 
 ---
 
@@ -168,8 +172,7 @@ Update environment variables on the hosting platforms before deploying.
 * Follow system
 * Bookmarks
 * Real-time updates
-* Improved notifications
 
 ---
 
-⭐ If you found this project useful, consider giving it a star.
+⭐ If you found this project helpful, consider giving it a star.
