@@ -18,7 +18,9 @@ const twilioClient = twilio(
 
 /* EMAIL TRANSPORTER */
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
@@ -47,16 +49,7 @@ router.post("/request", async (req, res) => {
 
     if (!user) return res.status(404).json({ error: "User not found" });
 
-    /* ===== ONCE PER DAY LIMIT ===== */
-    if (
-      user.lastPasswordResetRequest &&
-      Date.now() - new Date(user.lastPasswordResetRequest).getTime() <
-        24 * 60 * 60 * 1000
-    ) {
-      return res.status(429).json({
-        error: "You can use this option only once per day.",
-      });
-    }
+
 
     if (mode === "email") {
       const otp = Math.floor(100000 + Math.random() * 900000).toString();
