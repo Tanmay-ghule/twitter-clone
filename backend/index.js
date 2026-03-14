@@ -19,7 +19,7 @@ app.use(
       "https://twitter-clone-s0gjf53d6-tanmay-ghules-projects.vercel.app",
     ],
     credentials: true,
-  })
+  }),
 );
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
@@ -65,33 +65,14 @@ app.get("/loggedinuser", async (req, res) => {
 });
 
 app.post("/post", async (req, res) => {
-  const tweet = new Tweet(req.body);
-  await tweet.save();
-
-  const populatedTweet = await tweet.populate("author");
-
-  if (populatedTweet.content) {
-    const users = await User.find({
-      keywords: { $exists: true, $not: { $size: 0 } },
-    });
-
-    for (const user of users) {
-      for (const keyword of user.keywords) {
-        if (
-          populatedTweet.content.toLowerCase().includes(keyword.toLowerCase())
-        ) {
-          await Notification.create({
-            user: user._id,
-            tweet: populatedTweet._id,
-            keywordMatched: keyword,
-          });
-          break;
-        }
-      }
-    }
+  try {
+    const tweet = new Tweet(req.body);
+    await tweet.save();
+    const populatedTweet = await tweet.populate("author");
+    res.json(populatedTweet);
+  } catch (err) {
+    res.status(500).json({ error: "Post failed" });
   }
-
-  res.json(populatedTweet);
 });
 
 app.get("/post", async (req, res) => {
@@ -148,7 +129,7 @@ app.patch("/userupdate/:email", async (req, res) => {
     const updatedUser = await User.findOneAndUpdate(
       { email: req.params.email },
       { $set: req.body },
-      { new: true }
+      { new: true },
     );
 
     if (!updatedUser) {
