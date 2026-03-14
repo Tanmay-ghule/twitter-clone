@@ -3,28 +3,32 @@ dotenv.config();
 
 import express from "express";
 import User from "../modals/user.js";
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 import bcrypt from "bcrypt";
 import { generatePassword } from "../utils/passwordGenerator.js";
 import admin from "../firebaseAdmin.js";
 import twilio from "twilio";
 
 const router = express.Router();
-const resend = new Resend(process.env.RESEND_API_KEY);
+
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
 
 const twilioClient = twilio(
   process.env.TWILIO_SID,
   process.env.TWILIO_AUTH_TOKEN,
 );
 
-/* ================= REQUEST OTP ================= */
 router.post("/request", async (req, res) => {
   try {
     const { email, phone, mode } = req.body;
-
-    console.log("REQUEST BODY:", req.body);
-    console.log("PHONE:", phone);
-    console.log("MODE:", mode);
 
     const user = await User.findOne({
       $or: [
@@ -35,30 +39,35 @@ router.post("/request", async (req, res) => {
       ],
     });
 
-    console.log("USER FOUND:", user);
-
     if (!user) return res.status(404).json({ error: "User not found" });
+
+    if (
+      user.lastPasswordResetRequest &&
+      Date.now() - new Date(user.lastPasswordResetRequest).getTime() 
+        24 * 60 * 60 * 1000
+    ) {
+      return res.status(429).json({
+        error: "You can use this option only once per day.",
+      });
+    }
 
     if (mode === "email") {
       const otp = Math.floor(100000 + Math.random() * 900000).toString();
-
       const hashedOtp = await bcrypt.hash(otp, 10);
 
       user.otpHash = hashedOtp;
-      user.otpExpiry = Date.now() + 10 * 60 * 1000; // 10 min
+      user.otpExpiry = Date.now() + 10 * 60 * 1000;
       user.otpAttempts = 0;
       user.lastPasswordResetRequest = new Date();
 
       await user.save();
 
-      console.log("EMAIL OTP:", otp);
-
       try {
-        await resend.emails.send({
-          from: "onboarding@resend.dev",
+        await transporter.sendMail({
+          from: process.env.EMAIL_USER,
           to: user.email,
-          subject: "Your New Password",
-          text: `Your new password is: ${newPass}`,
+          subject: "Password Reset OTP",
+          text: `Your OTP is ${otp}. Valid for 10 minutes.`,
         });
       } catch (mailErr) {
         console.error("EMAIL SEND ERROR:", mailErr);
@@ -95,7 +104,6 @@ router.post("/request", async (req, res) => {
   }
 });
 
-/* ================= VERIFY OTP ================= */
 router.post("/verify", async (req, res) => {
   try {
     const { email, phone, otp, mode } = req.body;
@@ -106,7 +114,7 @@ router.post("/verify", async (req, res) => {
 
     if (!user) return res.status(404).json({ error: "User not found" });
 
-    if (mode === "email") {
+    if (mode === "email" || mode === "phone") {
       if (!user.otpHash || !user.otpExpiry) {
         return res.status(400).json({ error: "OTP expired" });
       }
@@ -128,29 +136,6 @@ router.post("/verify", async (req, res) => {
       }
     }
 
-    if (mode === "phone") {
-      if (!user.otpHash || !user.otpExpiry) {
-        return res.status(400).json({ error: "OTP expired" });
-      }
-
-      if (user.otpAttempts >= 3) {
-        return res.status(403).json({ error: "Too many OTP attempts" });
-      }
-
-      if (user.otpExpiry < Date.now()) {
-        return res.status(401).json({ error: "OTP expired" });
-      }
-
-      const valid = await bcrypt.compare(otp, user.otpHash);
-
-      if (!valid) {
-        user.otpAttempts += 1;
-        await user.save();
-        return res.status(401).json({ error: "Invalid OTP" });
-      }
-    }
-
-    /* ===== GENERATE NEW PASSWORD ===== */
     const newPass = generatePassword();
     const hashedPassword = await bcrypt.hash(newPass, 10);
 
@@ -161,14 +146,8 @@ router.post("/verify", async (req, res) => {
 
     await user.save();
 
-    /* ===== SYNC FIREBASE PASSWORD ===== */
     const fbUser = await admin.auth().getUserByEmail(user.email);
-
-    await admin.auth().updateUser(fbUser.uid, {
-      password: newPass,
-    });
-
-    console.log("NEW PASSWORD for", user.email, ":", newPass);
+    await admin.auth().updateUser(fbUser.uid, { password: newPass });
 
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
