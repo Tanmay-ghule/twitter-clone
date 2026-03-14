@@ -283,9 +283,9 @@ const TweetComposer = ({
                       isOverLimit ||
                       isLoading
                     }
-                    className="bg-blue-500 hover:bg-blue-600 rounded-full px-5 sm:px-6 text-sm sm:text-base"
+                    className="bg-blue-500 rounded-full px-5 sm:px-6 text-sm sm:text-base"
                   >
-                    {isLoading ? "Posting..." : "Post"}
+                    {isLoading ? "Posting..." : `Post (${content.length})`}
                   </Button>
                 </div>
               </div>
