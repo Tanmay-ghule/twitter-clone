@@ -3,21 +3,29 @@ dotenv.config();
 
 import express from "express";
 import User from "../modals/user.js";
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 import bcrypt from "bcrypt";
 import { generatePassword } from "../utils/passwordGenerator.js";
 import admin from "../firebaseAdmin.js";
 import twilio from "twilio";
 
 const router = express.Router();
-const resend = new Resend(process.env.RESEND_API_KEY);
+
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
 
 const twilioClient = twilio(
   process.env.TWILIO_SID,
   process.env.TWILIO_AUTH_TOKEN,
 );
 
-/* ================= REQUEST OTP ================= */
 router.post("/request", async (req, res) => {
   try {
     const { email, phone, mode } = req.body;
@@ -41,11 +49,10 @@ router.post("/request", async (req, res) => {
 
     if (mode === "email") {
       const otp = Math.floor(100000 + Math.random() * 900000).toString();
-
       const hashedOtp = await bcrypt.hash(otp, 10);
 
       user.otpHash = hashedOtp;
-      user.otpExpiry = Date.now() + 10 * 60 * 1000; // 10 min
+      user.otpExpiry = Date.now() + 10 * 60 * 1000;
       user.otpAttempts = 0;
       user.lastPasswordResetRequest = new Date();
 
@@ -53,17 +60,12 @@ router.post("/request", async (req, res) => {
 
       console.log("EMAIL OTP:", otp);
 
-      try {
-        await resend.emails.send({
-          from: "onboarding@resend.dev",
-          to: user.email,
-          subject: "Password Reset OTP",
-          text: `Your OTP is ${otp}. Valid for 10 minutes.`,
-        });
-      } catch (mailErr) {
-        console.error("EMAIL SEND ERROR:", mailErr);
-        return res.status(500).json({ error: "Email sending failed" });
-      }
+      transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: user.email,
+        subject: "Password Reset OTP",
+        text: `Your OTP is ${otp}. Valid for 10 minutes.`,
+      }).catch((mailErr) => console.error("EMAIL SEND ERROR:", mailErr));
     }
 
     if (mode === "phone") {
@@ -95,7 +97,6 @@ router.post("/request", async (req, res) => {
   }
 });
 
-/* ================= VERIFY OTP ================= */
 router.post("/verify", async (req, res) => {
   try {
     const { email, phone, otp, mode } = req.body;
@@ -150,7 +151,6 @@ router.post("/verify", async (req, res) => {
       }
     }
 
-    /* ===== GENERATE NEW PASSWORD ===== */
     const newPass = generatePassword();
     const hashedPassword = await bcrypt.hash(newPass, 10);
 
@@ -161,21 +161,17 @@ router.post("/verify", async (req, res) => {
 
     await user.save();
 
-    /* ===== SYNC FIREBASE PASSWORD ===== */
     const fbUser = await admin.auth().getUserByEmail(user.email);
-
-    await admin.auth().updateUser(fbUser.uid, {
-      password: newPass,
-    });
+    await admin.auth().updateUser(fbUser.uid, { password: newPass });
 
     console.log("NEW PASSWORD for", user.email, ":", newPass);
 
-    await transporter.sendMail({
+    transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: user.email,
       subject: "Your New Password",
       text: `Your new password is: ${newPass}`,
-    });
+    }).catch((mailErr) => console.error("EMAIL SEND ERROR:", mailErr));
 
     res.json({ message: "New password sent to email" });
   } catch (err) {
