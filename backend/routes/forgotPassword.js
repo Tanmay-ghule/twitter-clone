@@ -41,10 +41,10 @@ router.post("/request", async (req, res) => {
 
     if (!user) return res.status(404).json({ error: "User not found" });
 
+    const oneDayAgo = 24 * 60 * 60 * 1000;
     if (
       user.lastPasswordResetRequest &&
-      Date.now() - new Date(user.lastPasswordResetRequest).getTime() 
-        24 * 60 * 60 * 1000
+      Date.now() - new Date(user.lastPasswordResetRequest).getTime() < oneDayAgo
     ) {
       return res.status(429).json({
         error: "You can use this option only once per day.",
