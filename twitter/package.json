@@ -2,12 +2,11 @@
   "name": "twitter",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "npm build",
-    "start": "npm start",
-    "lint": "eslint"
-  },
+"scripts": {
+  "start": "node index.js",
+  "dev": "nodemon index.js"
+}
+,
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.11",
     "@radix-ui/react-dropdown-menu": "^2.1.16",
