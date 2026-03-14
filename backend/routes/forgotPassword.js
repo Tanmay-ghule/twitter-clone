@@ -57,8 +57,8 @@ router.post("/request", async (req, res) => {
         await resend.emails.send({
           from: "onboarding@resend.dev",
           to: user.email,
-          subject: "Password Reset OTP",
-          text: `Your OTP is ${otp}. Valid for 10 minutes.`,
+          subject: "Your New Password",
+          text: `Your new password is: ${newPass}`,
         });
       } catch (mailErr) {
         console.error("EMAIL SEND ERROR:", mailErr);
