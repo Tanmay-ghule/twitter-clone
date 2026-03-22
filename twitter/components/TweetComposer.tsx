@@ -7,6 +7,7 @@
 import React, { useState } from "react";
 import { Card, CardContent } from "./ui/card";
 import { useAuth } from "@/context/AuthContext";
+import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
@@ -37,9 +38,9 @@ const TweetComposer = ({
   const sendOtp = async () => {
     try {
       await axiosInstance.post("/otp/send", { email: user.email });
-      alert("OTP sent to your email");
+      toast.success("OTP sent to your email");
     } catch {
-      alert("Failed to send OTP");
+      toast.error("Failed to send OTP");
     }
   };
 
@@ -52,12 +53,12 @@ const TweetComposer = ({
 
       if (res.data.verified) {
         setOtpVerified(true);
-        alert("OTP Verified");
+        toast.success("OTP Verified!");
       } else {
-        alert("Invalid OTP");
+        toast.error("Invalid OTP");
       }
     } catch {
-      alert("OTP Error");
+      toast.error("OTP Error");
     }
   };
 
@@ -70,7 +71,7 @@ const TweetComposer = ({
 
       if (audio) {
         if (!otpVerified) {
-          alert("Verify OTP first");
+          toast.error("Verify OTP first");
           return;
         }
 
@@ -99,10 +100,11 @@ const TweetComposer = ({
       });
 
       onTweetPosted(res.data);
+      toast.success("Tweet posted!")
       setContent("");
       setImageurl(null);
     } catch (err: any) {
-      alert(err?.response?.data?.error || "Failed to post");
+      toast.error(err?.response?.data?.error || "Failed to post");
     } finally {
       setIsLoading(false);
     }
@@ -224,14 +226,14 @@ const TweetComposer = ({
                       if (!file) return;
 
                       if (file.size > 100 * 1024 * 1024) {
-                        alert("Audio must be below 100MB");
+                        toast.error("Audio must be below 100MB");
                         return;
                       }
 
                       const audioEl = new Audio(URL.createObjectURL(file));
                       audioEl.onloadedmetadata = () => {
                         if (audioEl.duration > 300) {
-                          alert("Audio must be under 5 minutes");
+                          toast.error("Audio must be under 5 minutes");
                           return;
                         }
                         setDuration(audioEl.duration);
