@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -163,7 +162,7 @@ const Editprofile = ({ isopen, onclose }: any) => {
 
           <form id="edit-profile-form" onSubmit={handleSubmit}>
             <div className="relative">
-              <div className="h-32 sm:h-40 md:h-48 bg-gradient-to-r from-blue-600 to-purple-600 relative">
+              <div className="h-32 sm:h-40 md:h-48 bg-linear-to-r from-blue-600 to-purple-600 relative">
                 <Button
                   type="button"
                   variant="ghost"
