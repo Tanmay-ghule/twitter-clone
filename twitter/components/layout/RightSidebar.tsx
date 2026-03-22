@@ -36,7 +36,7 @@ const suggestions = [
 
 export default function RightSidebar() {
   return (
-    <div className="w-full p-4 space-y-4 sticky top-0">
+    <div className="w-full p-4 space-y-4">
       <div className="relative">
         <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
         <Input
@@ -45,7 +45,7 @@ export default function RightSidebar() {
         />
       </div>
 
-      <Card className="bg-gray-900 border-gray-800 rounded-2xl">
+      <Card className="bg-gray-900 border-gray-800">
         <CardContent className="p-4">
           <h3 className="text-white text-xl font-bold mb-2">
             Subscribe to Premium
@@ -60,7 +60,7 @@ export default function RightSidebar() {
         </CardContent>
       </Card>
 
-      <Card className="bg-gray-900 border-gray-800 rounded-2xl">
+      <Card className="bg-gray-900 border-gray-800">
         <CardContent className="p-4">
           <h3 className="text-white text-xl font-bold mb-4">You might like</h3>
 
