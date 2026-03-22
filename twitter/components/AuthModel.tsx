@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { X } from "lucide-react";
+import { X, Eye, EyeOff } from "lucide-react";
 import TwitterLogo from "./TwitterLogo";
 import { Separator } from "./ui/separator";
 import { Input } from "./ui/input";
@@ -181,12 +180,26 @@ const AuthModel = ({ isopen, onclose, initialmode = "login" }: any) => {
               onChange={(e) => handleInputchange("email", e.target.value)}
             />
 
-            <Input
-              type={showpassword ? "text" : "password"}
-              placeholder="Password"
-              value={formData.password}
-              onChange={(e) => handleInputchange("password", e.target.value)}
-            />
+            <div className="relative">
+              <Input
+                type={showpassword ? "text" : "password"}
+                placeholder="Password"
+                value={formData.password}
+                onChange={(e) => handleInputchange("password", e.target.value)}
+                className="pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showpassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+              >
+                {showpassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </button>
+            </div>
 
             {mode === "login" && (
               <div className="text-right">
