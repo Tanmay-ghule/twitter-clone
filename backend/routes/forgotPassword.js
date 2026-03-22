@@ -62,7 +62,7 @@ router.post("/request", async (req, res) => {
           subject: "Your OTP Code",
           text: `Your OTP is ${otp}`,
         })
-        .catch((err) => console.error("EMAIL ERROR:", err));
+        .catch(() => {});
     }
 
     if (mode === "phone") {
@@ -89,7 +89,6 @@ router.post("/request", async (req, res) => {
 
     res.json({ message: "OTP sent" });
   } catch (err) {
-    console.error("Forgot Password REQUEST Error:", err);
     res.status(500).json({ error: "Server error" });
   }
 });
@@ -178,7 +177,6 @@ router.post("/verify", async (req, res) => {
 
     res.json({ message: "New password sent to email" });
   } catch (err) {
-    console.error("Forgot Password VERIFY Error:", err);
     res.status(500).json({ error: "Server error" });
   }
 });
