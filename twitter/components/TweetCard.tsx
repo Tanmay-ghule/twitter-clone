@@ -75,7 +75,7 @@ const TweetCard = ({ tweet }: any) => {
               <span className="font-bold text-white text-sm sm:text-base truncate">
                 {tweetstate.author.displayName}
               </span>
-    
+
               <span className="text-gray-500 text-xs sm:text-sm truncate">
                 @{tweetstate.author.username}
               </span>
@@ -131,7 +131,7 @@ const TweetCard = ({ tweet }: any) => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="flex items-center gap-1 sm:gap-2"
+                className="flex items-center gap-1 sm:gap-2 hover:text-blue-400 transition-colors"
               >
                 <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span>{formatNumber(tweetstate.comments)}</span>
@@ -140,9 +140,7 @@ const TweetCard = ({ tweet }: any) => {
               <Button
                 variant="ghost"
                 size="sm"
-                className={`flex items-center gap-1 sm:gap-2 ${
-                  isRetweet ? "text-green-400" : ""
-                }`}
+                className={`flex items-center gap-1 sm:gap-2 hover:text-green-400 transition-colors ${isRetweet ? "text-green-400" : ""}`}
                 onClick={() => retweetTweet(tweetstate._id)}
               >
                 <Repeat2 className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -152,9 +150,7 @@ const TweetCard = ({ tweet }: any) => {
               <Button
                 variant="ghost"
                 size="sm"
-                className={`flex items-center gap-1 sm:gap-2 ${
-                  isLiked ? "text-red-500" : ""
-                }`}
+                className={`flex items-center gap-1 sm:gap-2 hover:text-red-500 transition-colors ${isLiked ? "text-red-500" : ""}`}
                 onClick={() => likeTweet(tweetstate._id)}
               >
                 <Heart
@@ -164,7 +160,7 @@ const TweetCard = ({ tweet }: any) => {
               </Button>
 
               <Button variant="ghost" size="sm">
-                <Share className="h-4 w-4 sm:h-5 sm:w-5" />
+                <Share className="hover:text-blue-400 transition-colors" />
               </Button>
             </div>
           </div>
