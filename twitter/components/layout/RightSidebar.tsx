@@ -41,7 +41,7 @@ export default function RightSidebar() {
         <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
         <Input
           placeholder="Search"
-          className="pl-12 bg-gray-900 border-gray-800 text-white placeholder-gray-400 rounded-full py-3"
+          className="pl-12 bg-gray-900 border-gray-800 text-white placeholder-gray-400 rounded-full py-3 focus:bg-gray-800 transition-colors"
         />
       </div>
 
@@ -54,7 +54,7 @@ export default function RightSidebar() {
             Subscribe to unlock new features and if eligible, receive a share of
             revenue.
           </p>
-          <Button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-full">
+          <Button className="bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-full px-5">
             Subscribe
           </Button>
         </CardContent>
@@ -64,9 +64,12 @@ export default function RightSidebar() {
         <CardContent className="p-4">
           <h3 className="text-white text-xl font-bold mb-4">You might like</h3>
 
-          <div className="space-y-4">
+          <div className="space-y-2">
             {suggestions.map((user) => (
-              <div key={user.id} className="flex items-center justify-between">
+              <div
+                key={user.id}
+                className="flex items-center justify-between hover:bg-gray-800/50 p-2 rounded-xl transition-colors cursor-pointer"
+              >
                 <div className="flex items-center space-x-3">
                   <Avatar className="h-10 w-10">
                     <AvatarImage src={user.avatar} alt={user.displayName} />
@@ -97,7 +100,7 @@ export default function RightSidebar() {
 
                 <Button
                   variant="outline"
-                  className="bg-white text-black hover:bg-gray-200 font-semibold rounded-full px-4"
+                  className="bg-white text-black hover:bg-gray-200 font-bold rounded-full px-5 text-sm"
                 >
                   Follow
                 </Button>
@@ -116,19 +119,34 @@ export default function RightSidebar() {
 
       <div className="p-4 text-xs text-gray-500 space-y-2">
         <div className="flex flex-wrap gap-x-3 gap-y-1">
-          <a href="#" className="hover:underline">
+          <a
+            href="#"
+            className="hover:underline hover:text-gray-300 transition-colors"
+          >
             Terms of Service
           </a>
-          <a href="#" className="hover:underline">
+          <a
+            href="#"
+            className="hover:underline hover:text-gray-300 transition-colors"
+          >
             Privacy Policy
           </a>
-          <a href="#" className="hover:underline">
+          <a
+            href="#"
+            className="hover:underline hover:text-gray-300 transition-colors"
+          >
             Cookie Policy
           </a>
-          <a href="#" className="hover:underline">
+          <a
+            href="#"
+            className="hover:underline hover:text-gray-300 transition-colors"
+          >
             Accessibility
           </a>
-          <a href="#" className="hover:underline">
+          <a
+            href="#"
+            className="hover:underline hover:text-gray-300 transition-colors"
+          >
             Ads info
           </a>
         </div>
