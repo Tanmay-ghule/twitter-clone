@@ -36,11 +36,11 @@ router.post("/", upload.single("audio"), async (req, res) => {
       (nowUTC.getUTCHours() * 60 + nowUTC.getUTCMinutes() + 330) % 1440;
     const istHour = Math.floor(istMinutes / 60);
 
-    if (istHour < 14 || istHour >= 19) {
-      return res.status(403).json({
-        error: "Audio tweets are only allowed between 2:00 PM and 7:00 PM IST",
-      });
-    }
+    // if (istHour < 14 || istHour >= 19) {
+    //   return res.status(403).json({
+    //     error: "Audio tweets are only allowed between 2:00 PM and 7:00 PM IST",
+    //   });
+    // }
 
     if (!req.file) {
       return res.status(400).json({ error: "No audio uploaded" });
