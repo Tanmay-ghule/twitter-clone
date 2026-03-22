@@ -68,6 +68,7 @@ const AuthModel = ({ isopen, onclose, initialmode = "login" }: any) => {
           formData.password,
           formData.username,
           formData.displayName,
+          formData.phone,
         );
         onclose();
         setFormData({

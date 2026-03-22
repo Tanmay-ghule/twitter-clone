@@ -37,6 +37,7 @@ interface AuthContextType {
     password: string,
     username: string,
     displayName: string,
+    phone: string,
   ) => Promise<void>;
   googlesignin: () => Promise<void>;
   logout: () => Promise<void>;
@@ -132,6 +133,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     password: string,
     username: string,
     displayName: string,
+    phone: string,
   ) => {
     setIsLoading(true);
     try {
@@ -146,6 +148,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         displayName,
         avatar: usercred.user.photoURL || "",
         email: usercred.user.email,
+        phone,
       };
 
       const res = await axiosInstance.post("/register", newuser);
