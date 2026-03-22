@@ -1,9 +1,9 @@
 import dotenv from "dotenv";
 dotenv.config();
-
+import { Resend } from "resend";
+const resend = new Resend(process.env.RESEND_API_KEY);
 import express from "express";
 import User from "../modals/user.js";
-import nodemailer from "nodemailer";
 import bcrypt from "bcrypt";
 import { generatePassword } from "../utils/passwordGenerator.js";
 import admin from "../firebaseAdmin.js";
@@ -15,17 +15,6 @@ const twilioClient = twilio(
   process.env.TWILIO_SID,
   process.env.TWILIO_AUTH_TOKEN,
 );
-
-/* EMAIL TRANSPORTER */
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
 
 /* ================= REQUEST OTP ================= */
 router.post("/request", async (req, res) => {
@@ -74,14 +63,12 @@ router.post("/request", async (req, res) => {
 
       console.log("EMAIL OTP:", otp);
 
-      transporter
-        .sendMail({
-          from: process.env.EMAIL_USER,
-          to: user.email,
-          subject: "Password Reset OTP",
-          text: `Your OTP is ${otp}. Valid for 10 minutes.`,
-        })
-        .catch((err) => console.error("EMAIL SEND ERROR:", err));
+      resend.emails.send({
+      from: "onboarding@resend.dev",
+      to: email,
+      subject: "Your OTP Code",
+      text: `Your OTP is ${otp}`,
+    }).catch((err) => console.error("EMAIL ERROR:", err));
     }
 
     if (mode === "phone") {
