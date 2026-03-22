@@ -63,12 +63,14 @@ router.post("/request", async (req, res) => {
 
       console.log("EMAIL OTP:", otp);
 
-      resend.emails.send({
-      from: "onboarding@resend.dev",
-      to: email,
-      subject: "Your OTP Code",
-      text: `Your OTP is ${otp}`,
-    }).catch((err) => console.error("EMAIL ERROR:", err));
+      resend.emails
+        .send({
+          from: "onboarding@resend.dev",
+          to: email,
+          subject: "Your OTP Code",
+          text: `Your OTP is ${otp}`,
+        })
+        .catch((err) => console.error("EMAIL ERROR:", err));
     }
 
     if (mode === "phone") {
@@ -175,13 +177,14 @@ router.post("/verify", async (req, res) => {
 
     console.log("NEW PASSWORD for", user.email, ":", newPass);
 
-    transporter.sendMail({
-        from: process.env.EMAIL_USER,
+    resend.emails
+      .send({
+        from: "onboarding@resend.dev",
         to: user.email,
         subject: "Your New Password",
         text: `Your new password is: ${newPass}`,
       })
-      .catch((err) => console.error("EMAIL SEND ERROR:", err));
+      .catch((err) => console.error("EMAIL ERROR:", err));
 
     res.json({ message: "New password sent to email" });
   } catch (err) {
