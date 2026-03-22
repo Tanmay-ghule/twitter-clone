@@ -2,21 +2,12 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const router = express.Router();
 
 const otpStore = new Map();
-
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
 
 router.post("/send", async (req, res) => {
   const { email } = req.body;
@@ -25,12 +16,12 @@ router.post("/send", async (req, res) => {
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
   otpStore.set(email, otp);
 
-  await transporter.sendMail({
-    from: process.env.EMAIL_USER,
-    to: email,
-    subject: "Your OTP Code",
-    text: `Your OTP is ${otp}`,
-  });
+resend.emails.send({
+  from: "onboarding@resend.dev",
+  to: email,
+  subject: "Your OTP Code",
+  text: `Your OTP is ${otp}`,
+}).catch((err) => console.error("EMAIL ERROR:", err));
 
   res.json({ message: "OTP sent" });
 });
