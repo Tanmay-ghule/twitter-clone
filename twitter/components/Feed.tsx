@@ -36,8 +36,7 @@ const Feed = () => {
       setloading(true);
       const res = await axiosInstance.get<Tweet[]>("/post");
       setTweets(res.data);
-    } catch (error) {
-      console.error(error);
+    } catch {
     } finally {
       setloading(false);
     }
@@ -52,9 +51,9 @@ const Feed = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen pb-16 md:pb-0">
       <div className="sticky top-0 bg-black/90 backdrop-blur-md border-b border-gray-800 z-10">
-        <div className="px-4 py-3">
+        <div className="px-4 py-3 border-b border-gray-800/50">
           <h1 className="text-xl font-bold text-white">Home</h1>
         </div>
 
@@ -72,7 +71,7 @@ const Feed = () => {
                 data-[state=active]:bg-transparent
                 data-[state=active]:text-white
                 data-[state=active]:border-b-2
-                data-[state=active]:border-white
+                data-[state=active]:border-blue-500
                 transition-colors duration-150
               "
             >
@@ -91,7 +90,7 @@ const Feed = () => {
                 data-[state=active]:bg-transparent
                 data-[state=active]:text-white
                 data-[state=active]:border-b-2
-                data-[state=active]:border-white
+                data-[state=active]:border-blue-500
                 transition-colors duration-150
               "
             >
