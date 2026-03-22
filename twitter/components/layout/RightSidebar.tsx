@@ -68,21 +68,21 @@ export default function RightSidebar() {
             {suggestions.map((user) => (
               <div
                 key={user.id}
-                className="flex items-center justify-between hover:bg-gray-800/50 p-2 rounded-xl transition-colors cursor-pointer"
+                className="flex items-center justify-between gap-2 hover:bg-gray-800/50 p-2 rounded-xl transition-colors cursor-pointer"
               >
-                <div className="flex items-center space-x-3">
-                  <Avatar className="h-10 w-10">
+                <div className="flex items-center space-x-3 min-w-0 flex-1">
+                  <Avatar className="h-10 w-10 shrink-0">
                     <AvatarImage src={user.avatar} alt={user.displayName} />
                     <AvatarFallback>{user.displayName[0]}</AvatarFallback>
                   </Avatar>
 
-                  <div>
+                  <div className="min-w-0">
                     <div className="flex items-center space-x-1">
-                      <span className="text-white font-semibold">
+                      <span className="text-white font-semibold truncate">
                         {user.displayName}
                       </span>
                       {user.verified && (
-                        <div className="bg-blue-500 rounded-full p-0.5">
+                        <div className="bg-blue-500 rounded-full p-0.5 shrink-0">
                           <svg
                             className="h-3 w-3 text-white fill-current"
                             viewBox="0 0 20 20"
@@ -92,7 +92,7 @@ export default function RightSidebar() {
                         </div>
                       )}
                     </div>
-                    <span className="text-gray-400 text-sm">
+                    <span className="text-gray-400 text-sm truncate block">
                       @{user.username}
                     </span>
                   </div>
@@ -100,7 +100,7 @@ export default function RightSidebar() {
 
                 <Button
                   variant="outline"
-                  className="bg-white text-black hover:bg-gray-200 font-bold rounded-full px-5 text-sm"
+                  className="bg-white text-black hover:bg-gray-200 font-bold rounded-full px-5 text-sm shrink-0"
                 >
                   Follow
                 </Button>
