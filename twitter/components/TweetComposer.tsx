@@ -11,7 +11,15 @@ import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
-import { BarChart3, Smile, Calendar, MapPin, Image, X } from "lucide-react";
+import {
+  BarChart3,
+  Smile,
+  Calendar,
+  MapPin,
+  Image,
+  X,
+  Mic,
+} from "lucide-react";
 import axios from "axios";
 import axiosInstance from "@/lib/axiosInstance";
 
@@ -26,6 +34,7 @@ const TweetComposer = ({
   const [isLoading, setIsLoading] = useState(false);
   const [imageurl, setImageurl] = useState<string | null>(null);
 
+  const [showAudioSection, setShowAudioSection] = useState(false);
   const [audio, setAudio] = useState<File | null>(null);
   const [otp, setOtp] = useState("");
   const [otpVerified, setOtpVerified] = useState(false);
@@ -100,7 +109,7 @@ const TweetComposer = ({
       });
 
       onTweetPosted(res.data);
-      toast.success("Tweet posted!")
+      toast.success("Tweet posted!");
       setContent("");
       setImageurl(null);
     } catch (err: any) {
@@ -184,7 +193,7 @@ const TweetComposer = ({
               )}
 
               {/* OTP Section */}
-              {!otpVerified && (
+              {showAudioSection && !otpVerified && (
                 <div className="flex flex-col sm:flex-row gap-2 mt-3">
                   <input
                     value={otp}
@@ -212,7 +221,7 @@ const TweetComposer = ({
               )}
 
               {/* Audio Upload — only after OTP verified */}
-              {otpVerified && (
+              {showAudioSection && otpVerified && (
                 <div className="mt-3">
                   <label className="text-sm text-green-400 mb-1 block">
                     ✅ OTP Verified — Upload Audio
@@ -266,6 +275,10 @@ const TweetComposer = ({
                   <Smile className="h-5 w-5" />
                   <Calendar className="h-5 w-5" />
                   <MapPin className="h-5 w-5" />
+                  <Mic
+                    className={`h-5 w-5 cursor-pointer hover:text-blue-300 ${showAudioSection ? "text-blue-400" : "text-gray-500"}`}
+                    onClick={() => setShowAudioSection(!showAudioSection)}
+                  />
                 </div>
 
                 <div className="flex items-center gap-3">
