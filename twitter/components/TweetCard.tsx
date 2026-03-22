@@ -4,6 +4,7 @@
 
 import { Card, CardContent } from "./ui/card";
 import AudioPlayer from "./AudioPlayer";
+import { toast } from "sonner";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import {
   Heart,
@@ -27,8 +28,8 @@ const TweetCard = ({ tweet }: any) => {
         userId: user?._id,
       });
       settweetstate(res.data);
-    } catch (error) {
-      console.log(error);
+    } catch {
+      toast.error("Failed to like tweet");
     }
   };
 
@@ -38,8 +39,8 @@ const TweetCard = ({ tweet }: any) => {
         userId: user?._id,
       });
       settweetstate(res.data);
-    } catch (error) {
-      console.log(error);
+    } catch {
+      toast.error("Failed to retweet");
     }
   };
 

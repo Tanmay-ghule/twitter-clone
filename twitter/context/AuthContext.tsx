@@ -11,6 +11,7 @@ import {
 } from "firebase/auth";
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "./firebase";
+import { toast } from "sonner";
 import axiosInstance from "@/lib/axiosInstance";
 
 interface User {
@@ -66,7 +67,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const emailFromFirebase = firebaseUser.email;
 
         if (!emailFromFirebase) {
-          console.error("Firebase returned no email");
+          toast.error("Firebase returned no email");
           return;
         }
 
@@ -78,8 +79,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           setUser(res.data);
           localStorage.setItem("twitter-user", JSON.stringify(res.data));
         }
-      } catch (err) {
-        console.error("Auth state error:", err);
+      } catch {
+        toast.error("Auth state error:");
       } finally {
         setIsLoading(false);
       }
@@ -92,7 +93,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsLoading(true);
     try {
       if (!email?.trim()) {
-        alert("Enter valid email");
+        toast.error("Enter valid email");
         return;
       }
 
@@ -105,7 +106,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const emailFromFirebase = usercred.user.email;
 
       if (!emailFromFirebase) {
-        console.error("Firebase returned no email");
+        toast.error("Firebase returned no email");
         setIsLoading(false);
         return;
       }
@@ -119,8 +120,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         localStorage.setItem("twitter-user", JSON.stringify(res.data));
       }
     } catch (error: any) {
-      console.error("FIREBASE ERROR:", error);
-      alert(error.message);
+      toast.error("FIREBASE ERROR:", error);
+      toast.error(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -154,16 +155,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         localStorage.setItem("twitter-user", JSON.stringify(res.data));
       }
     } catch (error: any) {
-      console.error("FIREBASE ERROR:", error);
+      toast.error("FIREBASE ERROR:", error);
 
       if (error.code === "auth/email-already-in-use") {
-        alert("Email already registered. Please login instead.");
+        toast.error("Email already registered. Please login instead.");
       } else if (error.code === "auth/weak-password") {
-        alert("Password must be at least 6 characters.");
+        toast.error("Password must be at least 6 characters.");
       } else if (error.code === "auth/invalid-email") {
-        alert("Invalid email format.");
+        toast.error("Invalid email format.");
       } else {
-        alert("Signup failed. Try again.");
+        toast.error("Signup failed. Try again.");
       }
     } finally {
       setIsLoading(false);
@@ -180,7 +181,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const emailFromFirebase = firebaseUser.email;
 
       if (!emailFromFirebase) {
-        console.error("Google user has no email");
+        toast.error("Google user has no email");
         return;
       }
 
@@ -195,7 +196,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (error: any) {
       if (error.code === "auth/popup-closed-by-user") return;
 
-      console.error("GOOGLE SIGNIN ERROR:", error);
+      toast.error("GOOGLE SIGNIN ERROR:", error);
     } finally {
       setIsLoading(false);
     }
