@@ -20,14 +20,11 @@ const Landing = () => {
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col lg:flex-row">
-      {/* Left — Logo (hidden on mobile) */}
       <div className="hidden lg:flex lg:flex-1 items-center justify-center">
         <TwitterLogo className="text-white h-80 w-80" />
       </div>
 
-      {/* Right — Content */}
       <div className="flex-1 flex flex-col justify-center px-6 sm:px-10 lg:px-16 py-10 lg:py-0 max-w-full lg:max-w-2xl mx-auto w-full">
-        {/* Logo on mobile */}
         <div className="lg:hidden mb-8 text-center">
           <TwitterLogo size="xl" className="text-white mx-auto" />
         </div>
@@ -42,11 +39,10 @@ const Landing = () => {
             </h2>
           </div>
 
-          {/* Buttons */}
           <div className="space-y-3 sm:space-y-4 w-full max-w-xs">
             <Button
               variant="outline"
-              className="w-full py-3 rounded-full border-gray-600 bg-black text-white font-semibold text-sm sm:text-base h-11 sm:h-12"
+              className="w-full py-3 rounded-full border-gray-600 bg-black text-white font-semibold text-sm sm:text-base h-11 sm:h-12 hover:bg-gray-900 transition-colors"
               onClick={() => googlesignin()}
             >
               <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2" viewBox="0 0 24 24">
@@ -72,7 +68,7 @@ const Landing = () => {
 
             <Button
               variant="outline"
-              className="w-full py-3 rounded-full border-gray-600 bg-black text-white font-semibold text-sm sm:text-base h-11 sm:h-12"
+              className="w-full py-3 rounded-full border-gray-600 bg-black text-white font-semibold text-sm sm:text-base h-11 sm:h-12 hover:bg-gray-900 transition-colors"
               onClick={() => googlesignin()}
             >
               <svg
@@ -95,7 +91,7 @@ const Landing = () => {
             </div>
 
             <Button
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-full text-sm sm:text-base h-11 sm:h-12"
+              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-full text-sm sm:text-base h-11 sm:h-12 transition-colors"
               onClick={() => openAuthModal("signup")}
             >
               Create Account
@@ -103,28 +99,36 @@ const Landing = () => {
 
             <p className="text-xs text-gray-400 leading-relaxed">
               By signing up, you agree to the{" "}
-              <a href="#" className="text-blue-400 hover:underline">
+              <a
+                href="#"
+                className="text-blue-400 hover:underline transition-colors"
+              >
                 Terms of Service
               </a>{" "}
               and{" "}
-              <a href="#" className="text-blue-400 hover:underline">
+              <a
+                href="#"
+                className="text-blue-400 hover:underline transition-colors"
+              >
                 Privacy Policy
               </a>
               , including{" "}
-              <a href="#" className="text-blue-400 hover:underline">
+              <a
+                href="#"
+                className="text-blue-400 hover:underline transition-colors"
+              >
                 Cookie Use
               </a>
             </p>
           </div>
 
-          {/* Login */}
           <div className="space-y-3 sm:space-y-5">
             <p className="text-base sm:text-lg font-bold">
               Already have an account?
             </p>
             <Button
               variant="outline"
-              className="w-full max-w-xs py-3 rounded-full border-gray-600 hover:bg-gray-900 text-blue-400 font-semibold text-sm sm:text-base h-11 sm:h-12"
+              className="w-full max-w-xs py-3 rounded-full border-gray-600 hover:bg-gray-900 text-blue-400 font-bold text-sm sm:text-base h-11 sm:h-12 transition-colors"
               onClick={() => openAuthModal("login")}
             >
               Log in

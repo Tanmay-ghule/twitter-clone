@@ -65,7 +65,7 @@ const Editprofile = ({ isopen, onclose }: any) => {
     try {
       await updateProfile(formData);
       onclose();
-    } catch (error) {
+    } catch {
       setError({ general: "Failed to update profile. Please try again." });
     } finally {
       setIsLoading(false);
@@ -92,7 +92,7 @@ const Editprofile = ({ isopen, onclose }: any) => {
     setIsLoading(true);
     try {
       const res = await fetch(
-        "https://api.imgbb.com/1/upload?key=abf3d42ccfaa0abe0105dd032362b0a7",
+        `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_KEY}`,
         {
           method: "POST",
           body: formDataImg,
@@ -103,8 +103,7 @@ const Editprofile = ({ isopen, onclose }: any) => {
       if (data?.data?.display_url) {
         setFormData((prev) => ({ ...prev, avatar: data.data.display_url }));
       }
-    } catch (err) {
-      console.error(err);
+    } catch {
     } finally {
       setIsLoading(false);
     }
@@ -112,18 +111,7 @@ const Editprofile = ({ isopen, onclose }: any) => {
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4">
-      <Card
-        className="
-          w-full
-          max-w-xl lg:max-w-2xl
-          bg-black
-          border-gray-800
-          text-white
-          max-h-[92vh]
-          overflow-y-auto
-          rounded-xl
-        "
-      >
+      <Card className="w-full max-w-xl lg:max-w-2xl bg-black border-gray-800 text-white max-h-[92vh] overflow-y-auto rounded-xl">
         <CardHeader className="relative pb-3 sm:pb-4 border-b border-gray-800 px-3 sm:px-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -175,7 +163,7 @@ const Editprofile = ({ isopen, onclose }: any) => {
 
           <form id="edit-profile-form" onSubmit={handleSubmit}>
             <div className="relative">
-              <div className="h-32 sm:h-40 md:h-48 bg-linear-to-r from-blue-600 to-purple-600 relative">
+              <div className="h-32 sm:h-40 md:h-48 bg-gradient-to-r from-blue-600 to-purple-600 relative">
                 <Button
                   type="button"
                   variant="ghost"
@@ -189,14 +177,7 @@ const Editprofile = ({ isopen, onclose }: any) => {
 
               <div className="absolute -bottom-12 sm:-bottom-14 md:-bottom-16 left-3 sm:left-4">
                 <div className="relative">
-                  <Avatar
-                    className="
-                      h-20 w-20          
-                      sm:h-24 sm:w-24    
-                      md:h-32 md:w-32    
-                      border-4 border-black
-                    "
-                  >
+                  <Avatar className="h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 border-4 border-black">
                     <AvatarImage src={formData.avatar} />
                     <AvatarFallback className="text-xl sm:text-2xl">
                       {formData.displayName?.[0] || "U"}
