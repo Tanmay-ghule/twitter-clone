@@ -21,10 +21,6 @@ router.post("/request", async (req, res) => {
   try {
     const { email, phone, mode } = req.body;
 
-    console.log("REQUEST BODY:", req.body);
-    console.log("PHONE:", phone);
-    console.log("MODE:", mode);
-
     const user = await User.findOne({
       $or: [
         { email },
@@ -33,8 +29,6 @@ router.post("/request", async (req, res) => {
         { phone: phone?.replace("+91", "") },
       ],
     });
-
-    console.log("USER FOUND:", user);
 
     if (!user) return res.status(404).json({ error: "User not found" });
 
@@ -60,8 +54,6 @@ router.post("/request", async (req, res) => {
       user.lastPasswordResetRequest = new Date();
 
       await user.save();
-
-      console.log("EMAIL OTP:", otp);
 
       resend.emails
         .send({
@@ -174,8 +166,6 @@ router.post("/verify", async (req, res) => {
     await admin.auth().updateUser(fbUser.uid, {
       password: newPass,
     });
-
-    console.log("NEW PASSWORD for", user.email, ":", newPass);
 
     resend.emails
       .send({
