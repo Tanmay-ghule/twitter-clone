@@ -11,7 +11,16 @@ import audioRoutes from "./routes/audioTweet.js";
 dotenv.config();
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://twitter-clone-swart-delta.vercel.app",
+      "https://twitter-clone-s0gjf53d6-tanmay-ghules-projects.vercel.app",
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 app.use("/otp", otpRoutes);
