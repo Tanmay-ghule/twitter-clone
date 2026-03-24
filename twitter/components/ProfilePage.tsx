@@ -122,7 +122,7 @@ export default function ProfilePage() {
         <div className="flex justify-end p-3 sm:p-4">
           <Button
             variant="outline"
-            className="border-gray-600 text-white bg-transparent hover:bg-gray-900 hover:border-white font-semibold rounded-full px-4 sm:px-6 text-sm sm:text-base transition-all"
+            className="border-gray-600 text-white bg-transparent hover:bg-gray-900 font-semibold rounded-full px-4 sm:px-6 text-sm sm:text-base transition-colors"
             onClick={() => setShowEditModal(true)}
           >
             Edit profile

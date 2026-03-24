@@ -42,7 +42,7 @@ const Landing = () => {
           <div className="space-y-3 sm:space-y-4 w-full max-w-xs">
             <Button
               variant="outline"
-              className="w-full py-3 rounded-full border-gray-600 bg-black text-white font-semibold text-sm sm:text-base h-11 sm:h-12 hover:bg-blue-500/10 hover:border-blue-500 transition-colors"
+              className="w-full py-3 rounded-full border-gray-600 bg-black text-white font-semibold text-sm sm:text-base h-11 sm:h-12 hover:bg-gray-900 transition-colors"
               onClick={() => googlesignin()}
             >
               <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2" viewBox="0 0 24 24">
@@ -68,7 +68,7 @@ const Landing = () => {
 
             <Button
               variant="outline"
-              className="w-full py-3 rounded-full border-gray-600 bg-black text-white font-semibold text-sm sm:text-base h-11 sm:h-12 hover:bg-blue-500/10 hover:border-blue-500 transition-colors"
+              className="w-full py-3 rounded-full border-gray-600 bg-black text-white font-semibold text-sm sm:text-base h-11 sm:h-12 hover:bg-gray-900 transition-colors"
               onClick={() => googlesignin()}
             >
               <svg
