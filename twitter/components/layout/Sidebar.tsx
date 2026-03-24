@@ -25,13 +25,13 @@ const Sidebar = ({ onNavigate, currentPage }: any) => {
   const { user, logout } = useAuth();
 
   const navigation = [
-    { name: "Home", icon: Home, page: "home" },
-    { name: "Explore", icon: Search, page: "explore" },
-    { name: "Notifications", icon: Bell, page: "notifications" },
-    { name: "Messages", icon: Mail, page: "messages" },
-    { name: "Bookmarks", icon: Bookmark, page: "bookmarks" },
-    { name: "Profile", icon: User, page: "profile" },
-    { name: "More", icon: MoreHorizontal, page: "more" },
+    { name: "Home", icon: Home, page: "home", active: true },
+    { name: "Explore", icon: Search, page: "explore", active: false },
+    { name: "Notifications", icon: Bell, page: "notifications", active: false },
+    { name: "Messages", icon: Mail, page: "messages", active: false },
+    { name: "Bookmarks", icon: Bookmark, page: "bookmarks", active: false },
+    { name: "Profile", icon: User, page: "profile", active: true },
+    { name: "More", icon: MoreHorizontal, page: "more", active: false },
   ];
 
   return (
@@ -49,10 +49,11 @@ const Sidebar = ({ onNavigate, currentPage }: any) => {
               w-full flex items-center
               justify-center lg:justify-start
               text-lg py-3 lg:py-5 px-2 lg:px-4
-              rounded-full hover:bg-blue-500/10 hover:text-white transition-colors
+              rounded-full transition-colors
+              ${item.active ? "hover:bg-blue-500/10 hover:text-white cursor-pointer" : "opacity-50 cursor-not-allowed"}
               ${currentPage === item.page ? "font-bold text-white" : "text-gray-300"}
             `}
-            onClick={() => onNavigate(item.page)}
+            onClick={() => item.active && onNavigate(item.page)}
           >
             <item.icon className="h-6 w-6 lg:mr-4 shrink-0" />
             <span className="hidden lg:inline">{item.name}</span>
@@ -102,9 +103,6 @@ const Sidebar = ({ onNavigate, currentPage }: any) => {
               align="start"
               className="w-56 bg-black p-2 border border-gray-800 rounded-xl"
             >
-              <DropdownMenuItem className="px-3 py-2 text-white text-sm cursor-pointer hover:bg-gray-900 rounded-lg">
-                Settings
-              </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={logout}
                 className="px-3 py-2 text-red-400 text-sm cursor-pointer hover:bg-gray-900 rounded-lg"

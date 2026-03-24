@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { X, Eye, EyeOff } from "lucide-react";
@@ -25,6 +25,11 @@ const AuthModel = ({ isopen, onclose, initialmode = "login" }: any) => {
   });
 
   const [error, setError] = useState<any>({});
+
+  useEffect(() => {
+    setMode(initialmode);
+  }, [initialmode]);
+
   if (!isopen) return null;
 
   const validateForm = () => {

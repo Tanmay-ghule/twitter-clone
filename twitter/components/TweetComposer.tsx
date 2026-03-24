@@ -33,6 +33,7 @@ const TweetComposer = ({
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [imageurl, setImageurl] = useState<string | null>(null);
+  const [imageLoading, setImageLoading] = useState(false);
 
   const [showAudioSection, setShowAudioSection] = useState(false);
   const [audio, setAudio] = useState<File | null>(null);
@@ -121,20 +122,24 @@ const TweetComposer = ({
 
   const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.length) return;
-
     const image = e.target.files[0];
     const formDataImg = new FormData();
     formDataImg.append("image", image);
-
     try {
-      setIsLoading(true);
+      setImageLoading(true);
+      toast.loading("Uploading image...");
       const res = await axios.post(
         `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_KEY}`,
         formDataImg,
       );
       setImageurl(res.data.data.display_url);
+      toast.dismiss();
+      toast.success("Image uploaded!");
+    } catch {
+      toast.dismiss();
+      toast.error("Image upload failed");
     } finally {
-      setIsLoading(false);
+      setImageLoading(false);
     }
   };
 
@@ -296,7 +301,8 @@ const TweetComposer = ({
                     disabled={
                       (!content.trim() && !audio && !imageurl) ||
                       isOverLimit ||
-                      isLoading
+                      isLoading ||
+                      imageLoading
                     }
                     className="bg-blue-500 hover:bg-blue-600 rounded-full px-5 sm:px-6 text-sm sm:text-base"
                   >
