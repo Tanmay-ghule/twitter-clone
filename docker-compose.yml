@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  # MongoDB Service
+  mongodb:
+    image: mongo:7.0
+    container_name: twitter-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: twitter-clone
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - twitter-network
+
+  # Backend Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: twitter-backend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - MONGODB_URL=mongodb://admin:password123@mongodb:27017/twitter-clone?authSource=admin
+      - NODE_ENV=development
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - mongodb
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - twitter-network
+
+  # Frontend Service
+  frontend:
+    build:
+      context: ./twitter
+      dockerfile: Dockerfile
+    container_name: twitter-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_BACKEND_URL=http://localhost:5000
+    env_file:
+      - ./twitter/.env.local
+    depends_on:
+      - backend
+    volumes:
+      - ./twitter:/app
+      - /app/node_modules
+      - /app/.next
+    networks:
+      - twitter-network
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  twitter-network:
+    driver: bridge

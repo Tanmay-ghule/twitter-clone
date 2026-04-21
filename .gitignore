@@ -1,0 +1,15 @@
+# env
+.env
+.env.*
+backend/.env
+
+# firebase keys
+serviceAccountKey.json
+backend/serviceAccountKey.json
+
+# node
+node_modules
+.next
+
+# uploads
+uploads/audio/*

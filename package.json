@@ -1,0 +1,23 @@
+{
+  "name": "twitter-clone-fullstack",
+  "version": "1.0.0",
+  "description": "Full-stack Twitter clone with Next.js and Express",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install --prefix backend && npm install --prefix twitter",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix twitter",
+    "build:frontend": "npm run build --prefix twitter",
+    "start:backend": "npm start --prefix backend",
+    "start:frontend": "npm start --prefix twitter"
+  },
+  "keywords": [
+    "twitter-clone",
+    "nextjs",
+    "express",
+    "mongodb",
+    "firebase"
+  ],
+  "author": "",
+  "license": "MIT"
+}
